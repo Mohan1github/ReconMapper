@@ -51,7 +51,7 @@ export default Loginscreen
 
 const styles = StyleSheet.create({
     constainer:{
-      flex:1,
+      flex:2,
       backgroundColor:"white",
     },
     formview:{
