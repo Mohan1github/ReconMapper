@@ -7,6 +7,7 @@ const Loginscreen = ({navigation}) => {
   const [password,setPassword] = useState("");
   const [loading,setLoading] = useState(false);
   const [error,setError] = useState("");
+
   const loginfunction = async()=>{
       try{
           setLoading((prev)=> !prev)
@@ -26,7 +27,7 @@ const Loginscreen = ({navigation}) => {
   //   loginfunction()
   // },[value,password])
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Loginscreen</Text>
       <View style={styles.formview}>
         <Text> Name or email</Text>
@@ -35,7 +36,9 @@ const Loginscreen = ({navigation}) => {
           <Text> password</Text>
           <TextInput placeholder="password" value = {password} onChange={(e)=>setPassword(e.target.value)}>
           </TextInput>
-           <a to ="Forgotpassword"> forgotpassword?</a> 
+           <TouchableOpacity>
+            <Text>forgotpassword?</Text>
+           </TouchableOpacity>
          { error? <View>
           <Text styles={{color:"red"}}>
             {error}
@@ -50,7 +53,7 @@ const Loginscreen = ({navigation}) => {
 export default Loginscreen
 
 const styles = StyleSheet.create({
-    constainer:{
+    container:{
       flex:2,
       backgroundColor:"white",
     },

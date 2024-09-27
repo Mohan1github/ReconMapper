@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View ,} from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TextInput, View ,} from 'react-native';
 import {useState} from "react";
 import Loginscreen from './screens/loginscreen';
+import Registerscreen from './screens/registerscreen';
 export default function App() {
   const [name ,setName] = useState("")
   return (
     <View >
-     <Loginscreen/>
+     <Registerscreen/>
     </View>
   );
 }
