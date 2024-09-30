@@ -19,7 +19,13 @@ const usermodel = new Schema({
     },
     secondary_email:{
         type:String,
-    }
+    },
+    your_bid:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Bid"
+        }
+    ]
 },{timestamps:true})
 const user = mongoose.model("Users",usermodel)
 module.exports={user}

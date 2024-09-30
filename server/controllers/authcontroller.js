@@ -46,7 +46,42 @@ const login =async(req,res )=>{
         res.status(500).json({success:false,msg:"Login failed"})
     }
 }
+
+const getuserdata = async(req,res )=>{
+    try{
+        const finduser = await user.findById({_id:req.user_id})
+        if(finduser){
+            console.log(finduser)
+            res.send({userdtat:finduser})
+        }
+        else{
+            res.status(402).json({success:false,msg:"You must login to see the profile"})
+            console.log("login to see the user data")
+        }
+    }
+    catch(err){
+        res.status(500).json({success:false,msg:"Internal server error"})
+    }
+}
+const updateuserdata = async(req,res ) =>{
+    const data = req.body;
+    try{
+        const updatinguser = await user.findByIdAndUpdate({_id:req.user_id},{data},{new:true})
+        await updatinguser.save();
+        if(updatinguser){
+            res.status(200).json({success:true,msg:"Profile updated successfully!"})
+        }
+        else{
+            res.status(400).json({success:false,masg:"Something went wrong"})
+        }
+    }
+    catch(err){
+        res.status(500).json({success:false,msg:"Internal server error"})
+    }
+}
 module.exports = {
     register,
-    login
+    login,
+    getuserdata,
+    updateuserdata
 }

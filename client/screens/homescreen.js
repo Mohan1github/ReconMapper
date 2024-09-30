@@ -1,14 +1,23 @@
-import { View, Text, SafeAreaView } from 'react-native'
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native'
 import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
-const homescreen = () => {
+const Homescreen = () => {
   return (
     <SafeAreaView>
-    <View>
-      <Text>homescreen</Text>
-    </View>
-    </SafeAreaView>
+        <View style={styles.container}>
+           <Text> Home</Text>
+        </View>
+        </SafeAreaView>
   )
 }
 
-export default homescreen;
+export default Homescreen
+
+const styles = StyleSheet.create({
+  container:{
+    flex:1,
+    backgroundColor:"white"
+  }
+  
+})

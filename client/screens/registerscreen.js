@@ -1,91 +1,81 @@
-import { View, Text, SafeAreaView,StyleSheet ,TouchableOpacity, TextInput} from 'react-native'
-import React from 'react'
-import {useState,useEffect} from 'react';
-const Registerscreen = (props) => {
-  const[email,setEmail] = useState("")
-  const[password,setPassword] = useState("");
-  const[name,setName] = useState("");
-  const [err,setError] = useState("");
-  const [loading,setLoading] = useState(false);
-  const userdata = {
-    name,
-    email,
-    password
-  }
-  async function registrationfunction(){
-    // try{
-    //   setLoading(true);
-    //   const res = await axios.post("http://",{userdata})
-    //   if(res.status === "success"){
-    //     setLoading(false);
-    //     props.navigation.navigate("Home")
-    //   }
-    //   else{
-    //     setLoading(false);
-    //     setError(err);
-    //     console.log(err);
-    //   }
-    // }
-    // catch(err){
-    //   setLoading(false);
-    //   console.log(err)
-    console.log("Button clicked!!!")
-    }
-    return (
-      <SafeAreaView >
-      <View style={styles.container}>
-        <Text style={{color:"black", letterSpacing:"5px",fontWeight:"800"}}> Sign in</Text>
-        <View style={{display:"flex",flexDirection:"column",gap:"5px"}}>
-        <TextInput style={styles.input} placeholder="Name"value ={name} onChange={(name)=> setName(name)}></TextInput>
-        <TextInput style={styles.input} placeholder="Email" value ={email} onChange={(email)=> setEmail(email)}></TextInput>
-        <TextInput style={styles.input} placeholder="Password" value ={password} onChange={(password)=> setPassword(password)}></TextInput>
-        </View>
-        <TouchableOpacity onPress={registrationfunction()} style={styles.buttn}>
-          { 
-            loading?(<Text style={styles.text}>Signin in ....</Text>):(<Text style={styles.text} >SignIn</Text>)
-          }
-          
-        </TouchableOpacity>
+import { View ,Text ,StyleSheet, TextInput, TouchableOpacity,Image} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import TextLink from "react-native-text-link"
+import Loginscreen from "./loginscreen";
+import { KeyboardAvoidingView } from "react-native";
+
+const Registerscreen = ({navigation}) => {
+  return (
+    <KeyboardAvoidingView style={styles.container}>
+    <SafeAreaView >
+      <Image  style={styles.imgkabins} source={require("../assets/adduser.png")}/>
+    <View  style={{marginTop:-120}}>
+      <Text style={{color:"black",fontSize:30,marginTop:100,fontWeight:"bold",textAlign:"center"}}>
+        Sign up
+      </Text>
+      <Text>Email</Text>
+      <TextInput style={styles.input} placeholder="Email" autocomplete = {false}></TextInput>
+      <Text>password</Text>
+      <TextInput style={styles.input} placeholder="Password" autocomplete = {false}></TextInput>
+      <Text>Name</Text>
+      <TextInput style={styles.input} placeholder="Name" autocomplete = {false}></TextInput>
+      <Text>Number</Text>
+      <TextInput style={styles.input} placeholder="Number"  type="number"autocomplete = {false}></TextInput>
+     
+      <TouchableOpacity style={styles.bttn}>
+        <Text style={styles.text}> 
+          Sign up
+        </Text>
+      </TouchableOpacity>
+      <View style={{display:"flex",flexDirection:"row",gap:5,marginTop:10,alignSelf:"center"}}>
+      <Text>Already have an account ?</Text>
+      <Text style={{color:"blue",fontSize:15,fontWeight:"bold"}} onPress={()=>navigation.navigate("Login")}>Login</Text>
       </View>
-      </SafeAreaView>
-    )
-  }
- 
+      
+    </View>
+   
+    </SafeAreaView>
+    </KeyboardAvoidingView>
+  )
+}
 
-
-export default Registerscreen;
-
-
-
-
-
+export default Registerscreen
 
 const styles = StyleSheet.create({
   container:{
     flex:1,
     backgroundColor:"white",
-    alignItems:'center',
-    justifyContent:'center'
+    // justifyContent:"center",
+    alignItems:"center",
+   
+  },
+  bttn:{
+    height:50,
+    width:200,
+    backgroundColor:"orange",
+    justifyContent:"center",
+    alignItems:"center",
+    borderRadius:8,
+    alignSelf:'center',
+    marginTop:8
   },
   text:{
-    fontFamily:"Roboto",
-    fontWeight:"800",
-    color:'white',
-  },
-  buttn:{
-    width:"10rem",
-    height:"2rem",
-    backgroundColor:"black",
-    borderRadius:"8px",
-    display:"flex",
-    alignItems:"center",
-    justifyContent:"center",
-    marginTop:"1rem"
-  },
-  input:{
-    width:"15rem",
-    height:"2rem",
-    border:"1px solid grey",
-    borderRadius:"8px",
-  },
+    fontSize:20,
+    fontWeight:"bold",
+    color:"white",
+   },
+   input:{
+    width:300,
+    height:50,
+    borderColor:"grey",
+    borderWidth:1,
+    marginBottom:10,
+    borderRadius:8,
+    paddingHorizontal:8
+   },
+   imgkabins:{
+    alignSelf:"center",
+    marginTop:10
+
+  }
 })

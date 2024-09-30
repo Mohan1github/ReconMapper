@@ -1,53 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text, TextInput, View ,} from 'react-native';
-import {useState} from "react";
-import Loginscreen from './screens/loginscreen';
-import Registerscreen from './screens/registerscreen';
+import { View ,Text ,StyleSheet, TextInput, TouchableOpacity} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import TextLink from "react-native-text-link"
+import Loginscreen from "./screens/loginscreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import Registerscreen from "./screens/registerscreen";
+import Forgotpassword from "./screens/forgotpassword";
+import Tabnavigation from "./authnavigation/tabnavigation";
+
 export default function App() {
-  const [name ,setName] = useState("")
-  return (
-    <View >
-     <Registerscreen/>
-    </View>
-  );
-}
+  const Stack = createStackNavigator();
+  return(
+    <NavigationContainer >
+        <Stack.Navigator >
+        <Stack.Screen name="Login" component={Loginscreen} options={{headerShown:false}}>
+        </Stack.Screen>
+        <Stack.Screen name ="Register" component={Registerscreen} options={{headerShown:false}}/>
+        <Stack.Screen name ="Forgotpassword" component={Forgotpassword} />
+        <Stack.Screen name="Tabnavigation" component={Tabnavigation} options={{headerShown:false}}/>
+    </Stack.Navigator>
+    </NavigationContainer>
+    
+  )
+} 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text:{
-    color:"blue",
-    fontFamily:"Poppins",
-    fontWeight:800,
-  },
-  input:{
-    height:"2rem",
-    width:"10rem",
-    border:"1px solid grey",
-    paddingLeft:"8px",
-  },
-  div:{
-    height:"10rem",
-    width:"10rem",
-    border:"1px solid grey",
-    backgroundColor:"black",
-    borderRadius:"8px",
-    display:"flex",
-    alignContent:"center",
-    justifyContent:"center",
-   
-  },
-  k:{
-    textHeight:"15rem",
-    fontWeight:1000,
-    fontFamily:"Poppins",
-    color:"white",
-    textAlign:'center',
-    maringTop:"40%",
-  }
-
-});

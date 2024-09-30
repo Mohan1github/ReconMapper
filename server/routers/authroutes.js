@@ -4,3 +4,5 @@ const {login,register} = require("../controllers/authcontroller");
 
 authrouter.post("/login",login)
 authrouter.post('/register',register)
+
+module.exports = authrouter;
