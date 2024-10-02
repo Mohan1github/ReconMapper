@@ -1,5 +1,5 @@
 const express = require('express')
-const {Bid} = require("../models/bidmodel");
+const { Bid } = require("../models/bidmodel");
 const { user } = require('../models/usermodel');
 const bcrypt = require('bcryptjs/dist/bcrypt');
 const addnewbid = async(req,res) =>{
@@ -63,33 +63,28 @@ const getbidbyid = async(req,res)=>{
         res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
-const forgotpasswordcheck = async(req,res)=>{
+const deletebid = async(req,res)=>{
     try{
-        const finduser = await user.find({email:email})
-        if(finduser){
-            res.status(200).json({success:true,msg:"Userfound"})
+        const deletebid = await Bid.findByIdAndDelete({id:req.params.id})
+        if(deletebid){
+            res.status(200).json({success:true,msg:"Bid deleted successfully"})
         }
         else{
-            res.status(404).json({success:false,msg:"User not found"})
+            res.status(400).json({success:false,msg:"Something went wrong"})
         }
     }
     catch(err){
         res.status(500).json({success:false,msg:"Internal server error"})
     }
-    
 }
-const changepassword = async(req,res)=>{
-    const user = await user.find({email:email})
+const updatebid = async(req,res)=>{
     try{
-        const password = req.body.password
-        const hasedpassword = bcrypt.hash(password,15)
-        const updatepassword = await user.findByIdAndUpdate({id:user._id},{$set:{password:hasedpassword}},{new:true})
-        if(updatepassword){
-            res.status(200).json({success:true,msg:"Password updated successfully"})
+        const findbid = await Bid.findByIdAndUpdate({id:req.params.id},{$set:req.body},{new:true})
+        if(findbid){
+            res.status(200).json({success:true,msg:"Bid updated successfully"})
         }
         else{
-            res.status(400).json({success:false,msg:"Something went wrong"
-            })
+            res.status(400).json({success:false,msg:"Something went wrong"})
         }
     }
     catch(err){
@@ -97,4 +92,4 @@ const changepassword = async(req,res)=>{
     }
 }
 
-module.exports ={addnewbid,getbids,getbidbyid,forgotpasswordcheck,changepassword}
+module.exports ={addnewbid,getbids,getbidbyid,updatebid}

@@ -36,17 +36,6 @@ const Homescreen = ({navigation}) => {
         <Text style={styles.text}>Famous</Text>
         <ScrollView horizontal={true} pagingEnabled={true} style={styles.scroll}>
           <View style={styles.hor}>
-            {
-
-            //   data.map((item)=>{
-            //     return(
-            //     <View key={item.id}>
-            //       <Text>{item.name}</Text>
-            //       <Text>{item.beautilevel}</Text>
-            //     </View>
-            //   )
-            // })
-            }  
             <TouchableOpacity onPress={()=>navigation.navigate("Details")}>
             <View style={styles.horizontal}>
               <Text>Kabinya</Text>
@@ -87,7 +76,7 @@ const Homescreen = ({navigation}) => {
               data.map((k)=>{
                 return(
                   <View style={styles.horizontal} key={k.id}>
-                  <Text>Kabinya</Text>
+                  <Text>kabinya</Text>
                   <Text>{k.name}</Text>
                   <Text>{k.beautilevel}</Text>
               </View>

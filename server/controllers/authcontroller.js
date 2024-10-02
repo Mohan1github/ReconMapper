@@ -32,7 +32,7 @@ const login =async(req,res )=>{
         if(finduser){
             const ispass = await bcrypt.compare(password,finduser.password)
             if(ispass){
-                const token = jwt.sign({id:finduser._id},{email:finduser.email},process.env.JWT_SECRET,{expiresIn:"1d"})
+                const token = jwt.sign({id:finduser._id},{email:finduser.email},process.env.JWT_SECRET,{expiresIn:"7d"})
                 res.send({success:true,"token":token})
             }
             else{
@@ -116,10 +116,25 @@ const changepassword = async(req,res)=>{
     }
 }
 
+const deleteuser = async(req,res)=>{
+    try{
+        const deleteuser = await user.findByIdAndDelete({id:req.params.id})
+        if(deleteuser){
+            res.status(200).json({success:true,msg:"User deleted successfully"})
+        }
+        else{
+            res.status(400).json({success:true,msg:"Something went wrong"})
+        }
+    }
+    catch(err){
+        res.status(500).json({success:false,msg:"Internal server error"})
+    }
+}
 module.exports = {
     register,
     login,
     getuserdata,
     updateuserdata
-    ,forgotpasswordcheck,changepassword
+    ,forgotpasswordcheck,changepassword,
+    deleteuser
 }
