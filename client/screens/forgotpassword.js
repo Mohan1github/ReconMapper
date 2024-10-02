@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import TextLink from "react-native-text-link"
 
 
-const Forgotpassword = () => {
+const Forgotpassword = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
     <View >
@@ -14,8 +14,8 @@ const Forgotpassword = () => {
       <Text  style={{marginTop:8,textAlign:"center",color:"grey",fontSize:15,marginBottom:8}}>Follow the weasy steps to set your new password!</Text>
       <Text style={{fontWeight:"bold",marginLeft:22}}>Email..</Text>
       <TextInput style={styles.input} placeholder="Email" autocomplete = {false}></TextInput>
-      <TouchableOpacity style={styles.bttn}>
-        <Text style={styles.text}> 
+      <TouchableOpacity style={styles.bttn} onPress={()=>navigation.navigate("Newpasswordsetup")}>
+        <Text style={styles.text} > 
           Send
         </Text>
       </TouchableOpacity>

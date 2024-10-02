@@ -6,12 +6,38 @@ import {
   TouchableOpacity,
   Image
 } from "react-native";
+import {useState} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import TextLink from "react-native-text-link";
-// import {Ionicons} from '@expo/vector-icons/Ionicons';
-import Icon from "react-native-vector-icons/FontAwesome";
+import Ionicons from "@expo/vector-icons";
+import axios from "axios";
 import { KeyboardAvoidingView } from "react-native";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 const Loginscreen = ({ navigation }) => {
+    const asyncStorage = useAsyncStorage()
+      const [email,setEmail] = useState("")
+      const[password,setPassword] = useState("")
+      const[loading,setLoading] = useState(false)
+      const[error,setError] = useState(null)
+      const loginfunction = async()=>{
+        setLoading(true)
+        try{
+          console.log(email)
+          console.log(password)
+          const user = await axios.post("http://192.168.232.19:3000/api/v1/auth/login",{email,password})
+          // if(res){ 
+          //   asyncStorage.setItem("currentUser",user)
+          //   setLoading(false)
+          // }
+        }
+        catch(err) 
+        {
+          setLoading(false)
+          setError(err)
+        }
+      }
+
+
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView>
@@ -34,12 +60,14 @@ const Loginscreen = ({ navigation }) => {
             style={styles.input}
             placeholder="Email.."
             autocomplete={false}
+            onChangeText={(text)=>setEmail(text)}
           ></TextInput>
           <Text>password</Text>
           <TextInput
             style={styles.input}
             placeholder="Password.."
             autocomplete={false}
+            onChangeText={(text)=>setPassword(text)}
           ></TextInput>
           <Text
             style={{ color: "blue", marginLeft: 185 }}
@@ -50,6 +78,7 @@ const Loginscreen = ({ navigation }) => {
           <TouchableOpacity
             style={styles.bttn}
             onPress={() => navigation.navigate("Tabnavigation")}
+            // onPress={()=>loginfunction()}
           >
             <Text style={styles.text}>Login</Text>
           </TouchableOpacity>
@@ -69,6 +98,7 @@ const Loginscreen = ({ navigation }) => {
             >
               Create new!
             </Text>
+            {/* <Ionicons name="checkmark-circle" size={40} color="green"></Ionicons> */}
           </View>
         </View>
       </KeyboardAvoidingView>

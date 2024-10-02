@@ -26,13 +26,14 @@ const register = async(req,res)=>{
 const login =async(req,res )=>{
     const email = req.body.email;
     const password = req.body.password;
+    console.log(email,password)
     try{
         const finduser = await user.find({email:email})
         if(finduser){
             const ispass = await bcrypt.compare(password,finduser.password)
             if(ispass){
                 const token = jwt.sign({id:finduser._id},{email:finduser.email},process.env.JWT_SECRET,{expiresIn:"1d"})
-                res.send({"token":token})
+                res.send({success:true,"token":token})
             }
             else{
                 res.status(400).json({success:false,msg:"Something went wrong!"})
@@ -79,9 +80,46 @@ const updateuserdata = async(req,res ) =>{
         res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
+
+
+const forgotpasswordcheck = async(req,res)=>{
+    try{
+        const finduser = await user.find({email:email})
+        if(finduser){
+            res.status(200).json({success:true,msg:"Userfound"})
+        }
+        else{
+            res.status(404).json({success:false,msg:"User not found"})
+        }
+    }
+    catch(err){
+        res.status(500).json({success:false,msg:"Internal server error"})
+    }
+    
+}
+const changepassword = async(req,res)=>{
+    const user = await user.find({email:email})
+    try{
+        const password = req.body.password
+        const hasedpassword = bcrypt.hash(password,15)
+        const updatepassword = await user.findByIdAndUpdate({id:user._id},{$set:{password:hasedpassword}},{new:true})
+        if(updatepassword){
+            res.status(200).json({success:true,msg:"Password updated successfully"})
+        }
+        else{
+            res.status(400).json({success:false,msg:"Something went wrong"
+            })
+        }
+    }
+    catch(err){
+        res.status(500).json({success:false,msg:"Internal server error"})
+    }
+}
+
 module.exports = {
     register,
     login,
     getuserdata,
     updateuserdata
+    ,forgotpasswordcheck,changepassword
 }

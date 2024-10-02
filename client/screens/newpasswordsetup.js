@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { StyleSheet, Text, TextInput, View,TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import React from 'react'
 import { useState } from "react";
@@ -7,17 +7,24 @@ const Newpasswordsetup = ({navigation}) => {
     const [confirmpass,setConfirmpassword] = useState("")
   return (
     <SafeAreaView style={styles.container}>
-    <View>
+    <View style={styles.container}>
+      <View>
+        <Text style={{fontSize:20,textAlign:"center",color:"grey"}}>
+          Set your new strong password for ypur account safety
+        </Text>
+      </View>
+      <View style={{alignSelf:"center",marginTop:20}}>
         <Text style={styles.text}>Password</Text>
         <TextInput style={styles.input}  placeholder = " password .." type="password" onPress={(text)=> setPassword(text)} >
         </TextInput>
         <Text style={styles.text} >Confirmpassword</Text>
         <TextInput style={styles.input}  placeholder = "Confirmpassword.." type="password" onPress={(text)=> setConfirmpassword(text)}></TextInput>
-        <TouchableOpacity style={styles.bttn} onPress={()=>navigation.navigate("Login")}>
-        <Text style={styles.text}> 
+        <TouchableOpacity style={styles.bttn} onPress={()=>navigation.navigate("")}>
+        <Text style={{color:"white",fontWeight:"bold",fontSize:20}}> 
           Set 
         </Text>
       </TouchableOpacity>
+      </View>
     </View>
     </SafeAreaView>
   )
@@ -28,7 +35,7 @@ export default Newpasswordsetup
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        alignItems:"center"
+        backgroundColor:"white"
     },
     bttn:{
         height:50,
@@ -47,11 +54,12 @@ const styles = StyleSheet.create({
         borderWidth:1,
         marginBottom:10,
         borderRadius:8,
-        paddingHorizontal:8
+        paddingHorizontal:8,
+       
        },
        text:{
-        fontSize:20,
+        fontSize:15,
         fontWeight:"bold",
-        color:"white",
+        color:"black",
        }
 })

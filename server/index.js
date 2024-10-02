@@ -1,16 +1,17 @@
-const express = require('express')
-const app = express();
+const express = require("express")
+const app  = express()
 const cors = require("cors")
-const bodyParser = require("body-parser");
-const authrouter = require("./routers/authroutes")
-const bidrouter = require("./routers/bidrouter")
-require("dotenv").config();
-// app.use(corsOption)
-app.use("api/v1/auth/user-auth",authrouter)
-app.use("api/v1/bids",bidrouter)
-app.use(bodyParser())
-app.use(express.json())
+const bodyparser = require("body-parser")
+const {authrouter} = require("../server/routers/authroutes")
+const {bidrouter} = require("../server/routers/bidrouter")
+const {connectdb} = require("../server/db/dbconnection")
 app.use(cors())
-app.listen(5000,()=>{
-    console.log("Server is running at port 5000....")
+app.use(express.json())
+app.use(bodyparser())
+app.use("/api/v1/auth",authrouter)
+app.use("/api/v1/bids",bidrouter)
+require("dotenv").config()
+connectdb();
+app.listen(3000,()=>{
+    console.log("server is running at 3000...")
 })
