@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
-const bidschema = mongoose.Schema({
-    bid_item_name:{
+const productschema = mongoose.Schema({
+    product_item_name:{
         type:String,
         required:true,
         unique:true
@@ -8,23 +8,23 @@ const bidschema = mongoose.Schema({
     image:{
         type:String,
     },
-    bid_amount:{
+    product_amount:{
         type:Number,
         required:true,
     },
-    bid_starting_date:{
+    product_starting_date:{
         type:String,
         required:true
     },
-    bid_item_owner:{
+    product_item_owner:{
         type:String,
         required:true
     },
-    bid_category:{
+    product_category:{
         type:String,
         required:true
     },
-    bid_item_count:{
+    product_item_count:{
         type:Number,
         default:1
     },
@@ -33,5 +33,5 @@ const bidschema = mongoose.Schema({
         ref:"user"
     }
 },{timestamps:true})
-const Bid = mongoose.model("bid",bidschema)
-module.exports={ Bid };
+const Product = mongoose.model("product",productschema)
+module.exports={ Product };

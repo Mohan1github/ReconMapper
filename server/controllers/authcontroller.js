@@ -2,21 +2,28 @@ const {user} = require("../models/usermodel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken")
 const register = async(req,res)=>{
-    const data = req.body;
+    const email = req.body.email;
     try{
-        const finduser = await user.find({email:data.email})
+        console.log(email);
+        const finduser = await user.findOne({email:email})
         if(finduser){
             res.status(400).json({success:false,msg:"user already exist"})
-            console.log("user already exsits");
         }
         else{
             const newuser = new user({
-                name:data.name,
-                email:data.email,
-                password:data.password
+                name:req.body.name,
+                email:req.body.email,
+                password:req.body.password,
+                number:req.body.number
             })
-            await newuser.save();
-            res.status(200).json({success:true,msg:"New user created!!"})
+
+            const saving = await newuser.save()
+            if(saving){
+                res.status(200).json({success:true,msg:"user creates successfully"})
+            }
+            else{
+            res.status(400).json({success:false,msg:"something went wrong"})
+            }
         }
     }
     catch(err){
@@ -33,7 +40,7 @@ const login =async(req,res )=>{
             const ispass = await bcrypt.compare(password,finduser.password)
             if(ispass){
                 const token = jwt.sign({id:finduser._id},{email:finduser.email},process.env.JWT_SECRET,{expiresIn:"7d"})
-                res.send({success:true,"token":token})
+                res.send({success:true,email:finduser.email,name:finduser.name,"token":token})
             }
             else{
                 res.status(400).json({success:false,msg:"Something went wrong!"})
@@ -50,7 +57,7 @@ const login =async(req,res )=>{
 
 const getuserdata = async(req,res )=>{
     try{
-        const finduser = await user.findById({_id:req.user_id})
+        const finduser = await user.findById({_id:req.user})
         if(finduser){
             console.log(finduser)
             res.send({userdtat:finduser})
@@ -130,11 +137,27 @@ const deleteuser = async(req,res)=>{
         res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
+
+const getallusers = async(req,res) =>{
+    try{
+        const userdata = await user.find()
+        if(userdata){
+            res.status(200).json({success:true,data:userdata})
+        }else{
+            res.status(400).json({success:false,msg:"Something went wrong"})
+        }
+    }
+    catch(err){
+        res.status(500).json({success:false,msg:"Internal server error"})
+    }
+}
 module.exports = {
     register,
     login,
     getuserdata,
     updateuserdata
-    ,forgotpasswordcheck,changepassword,
-    deleteuser
+    ,forgotpasswordcheck,
+    changepassword,
+    deleteuser,
+    getallusers
 }

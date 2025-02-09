@@ -1,7 +1,7 @@
 
 const logoutfunction = (req,res)=>{
     try{
-        const logout = res.clearcookies("token","")
+        const logout = res.cookies("token","")
         if(logout){
             res.status(200).json({success:true,mag:"Logout successfully"})
         }

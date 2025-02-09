@@ -1,5 +1,5 @@
 const express = require('express')
-const { Bid } = require("../models/bidmodel");
+const { Product } = require("../models/productmodel");
 const { user } = require('../models/usermodel');
 const bcrypt = require('bcryptjs/dist/bcrypt');
 const addnewbid = async(req,res) =>{
@@ -35,9 +35,9 @@ const addnewbid = async(req,res) =>{
         res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
-const getbids = async(res)=>{
+const getbids = async(res,req)=>{
     try{
-        const biddata = await Bid.find()
+        const biddata = await Product.find()
         if(biddata){
             res.status(200).json({success:true,data:biddata})
         }
@@ -46,7 +46,7 @@ const getbids = async(res)=>{
         }
     }
     catch(err){
-        res.status(500).json({success:false,msg:"Internal server error"})
+       res.status(500).json({success:false,msg:'Internal server error',err:err})
     }
 }
 const getbidbyid = async(req,res)=>{
@@ -92,4 +92,18 @@ const updatebid = async(req,res)=>{
     }
 }
 
-module.exports ={addnewbid,getbids,getbidbyid,updatebid}
+
+const sendexample = async(req,res)=>{
+    try{
+        let array = []
+        for(let i = 0;i<10;i++){
+            array.push("kabins")
+            console.log("Kabins");
+        }
+        res.status(200).json({success:true,data:array})
+    }
+    catch(err){
+        res.status(500).json({success:false,msg:"Internal server error"})
+    }
+}
+module.exports ={addnewbid,getbids,getbidbyid,updatebid,sendexample}

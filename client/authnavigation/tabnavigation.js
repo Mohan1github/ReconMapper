@@ -2,10 +2,9 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Homescreen from '../screens/homescreen';
 import Profile from "../screens/profile"
-import Yourbids from "../screens/yourbids"
-import Createbid from '../screens/createbid';
+import Youritems from "../screens/youritems"
+import Createproduct from '../screens/createproduct';
 import Blogsandnews from '../screens/blogsandnews';
-import { View ,Text,Image} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 const Tab = createBottomTabNavigator();
 const Tabnavigation = ()=>{
@@ -21,14 +20,14 @@ const Tabnavigation = ()=>{
           ),
           headerShown:false
         } }/>
-        <Tab.Screen name="Yourbids" component={Yourbids} options={{
+        <Tab.Screen name="YourProducts" component={Youritems} options={{
           tabBarIcon:({color , size})=>(
             // <Image source={require("../assets/home.png")} style={{height:35,width:35}}></Image>
             <Ionicons name="folder" size={25} color={color}/>
           ),
           headerShown:false
         } }/>
-        <Tab.Screen name="Createbid" component={Createbid} options={{
+        <Tab.Screen name="Sell" component={Createproduct} options={{
           tabBarIcon:({color , size})=>(
             // <Image source={require("../assets/create.jpg")} style={{height:35,width:35}}></Image>
             <Ionicons name="create" size={25} color={color}/>

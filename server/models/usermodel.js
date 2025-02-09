@@ -17,15 +17,9 @@ const usermodel = new Schema({
         type:Number,
         required:true,
     },
-    secondary_email:{
-        type:String,
+    profile_pic:{
+        type:String
     },
-    your_bid:[
-        {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"Bid"
-        }
-    ]
 },{timestamps:true})
 const user = mongoose.model("Users",usermodel)
 module.exports={user}

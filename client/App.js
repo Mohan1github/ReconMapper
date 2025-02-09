@@ -8,17 +8,26 @@ import Registerscreen from "./screens/registerscreen";
 import Forgotpassword from "./screens/forgotpassword";
 import Tabnavigation from "./authnavigation/tabnavigation";
 import Newpasswordsetup from "./screens/newpasswordsetup";
-import Details from "./screens/details";
+import Details from "./screens/itemdetails";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 export default function App() {
+  const asyncStorage = useAsyncStorage();
   const Stack = createStackNavigator();
+  // const user = asyncStorage.getItem("currentUser")
+  // const user = asyncStorage.getItem("currentUser")
+  
+//  const user = asyncStorage.getItem('currentUser');
+  const currentuser ="kabinya";
   return(
     <NavigationContainer >
         <Stack.Navigator >
-        <Stack.Screen name="Login" component={Loginscreen} options={{headerShown:false}}>
-        </Stack.Screen>
+          {
+            currentuser === undefined?<Stack.Screen name="Login" component={Loginscreen} options={{headerShown:false}}/> :(
+              <Stack.Screen name="Tabnavigation" component={Tabnavigation} options={{headerShown:false}}/>
+        )}
         <Stack.Screen name ="Register" component={Registerscreen} options={{headerShown:false}}/>
         <Stack.Screen name ="Forgotpassword" component={Forgotpassword}  />
-        <Stack.Screen name="Tabnavigation" component={Tabnavigation} options={{headerShown:false}}/>
+       
         <Stack.Screen name = "Newpasswordsetup" component = {Newpasswordsetup} option={{headerShown:false}}/>
         <Stack.Screen name = "Details" component = {Details} option={{headerShown:false}}/>
     </Stack.Navigator>

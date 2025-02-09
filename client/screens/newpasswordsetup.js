@@ -10,7 +10,7 @@ const Newpasswordsetup = ({navigation}) => {
     <View style={styles.container}>
       <View>
         <Text style={{fontSize:20,textAlign:"center",color:"grey"}}>
-          Set your new strong password for ypur account safety
+          Set your new strong password for your account safety
         </Text>
       </View>
       <View style={{alignSelf:"center",marginTop:20}}>
