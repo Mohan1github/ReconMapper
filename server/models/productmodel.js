@@ -1,8 +1,9 @@
 const mongoose = require("mongoose")
-const productschema = mongoose.Schema({
-    product_item_name:{
+const Schema = mongoose.Schema
+const productschema = new Schema({
+    name:{
         type:String,
-        required:true,
+        required:[true,"provide the name of the product"],
         unique:true
     },
     image:{
@@ -12,10 +13,6 @@ const productschema = mongoose.Schema({
         type:Number,
         required:true,
     },
-    product_starting_date:{
-        type:String,
-        required:true
-    },
     product_item_owner:{
         type:String,
         required:true
@@ -24,14 +21,9 @@ const productschema = mongoose.Schema({
         type:String,
         required:true
     },
-    product_item_count:{
-        type:Number,
-        default:1
-    },
     owner_id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"user"
+        type:String,
     }
 },{timestamps:true})
 const Product = mongoose.model("product",productschema)
-module.exports={ Product };
+module.exports = {Product} ;

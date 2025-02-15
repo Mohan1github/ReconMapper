@@ -18,8 +18,12 @@ const usermodel = new Schema({
         required:true,
     },
     profile_pic:{
-        type:String
+        type:String,
+        default:null
     },
+    products:[{
+        type:String
+    }]
 },{timestamps:true})
 const user = mongoose.model("Users",usermodel)
-module.exports={user}
+module.exports= {user}

@@ -2,32 +2,31 @@ const express = require('express')
 const { Product } = require("../models/productmodel");
 const { user } = require('../models/usermodel');
 const bcrypt = require('bcryptjs/dist/bcrypt');
-const addnewbid = async(req,res) =>{
-    const biddata = req.body;
+
+
+
+const addnewbid = async (req,res) =>{
     try{
-        const check = await Bid.find({bid_item_name:data.bidname})
-        if(check){
-            res.status(401).json({success:false,msg:"Bid item have already exist!"})
+        const findprod = await Product.findOne({name:req.body.name})
+        if(findprod){
+            res.status(400).json({success:false,msg:"Already product exist!!"})
         }
         else{
-            const newbiditem = new Bid({
-                bid_item_name:biddata.bidname,
-                image:biddata.filename,
-                bid_amount:biddata.bidamount,
-                bid_starting_date:biddata.startingdate,
-                bid_item_owner:biddata.bid_owner,
-                bid_category:biddata.category,
-                bid_item_count:biddata.item_count,
-                owner_id:req.user_id,
+            const newprod = new Product({
+                name:req.body.name,
+                image:req.body.image,
+                product_amount:req.body.product_amount,
+                product_item_owner:req.body.product_item_owner,
+                product_category:req.body.product_category,
+                owner_id:req.body.owner
             })
-            await newbiditem.save();
-            if(newbiditem){
-                console.log("Bid created successfully")
-                res.status(201).json({success:true,msg:"New bid created"})
+
+            const saving = await newprod.save()
+            if(saving){
+                res.status(201).json({success:true,msg:"Product created successfully!!"})
             }
             else{
-                console.log("Something went wrong!")
-                res.status(400).json({success:false,msg:"Something went wrong"})
+                res.status(400).json({success:false,msg:"Soemthing went wrong"})
             }
         }
     }
@@ -35,23 +34,30 @@ const addnewbid = async(req,res) =>{
         res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
-const getbids = async(res,req)=>{
+
+
+
+
+const getbids = async(req,res)=>{
     try{
         const biddata = await Product.find()
         if(biddata){
-            res.status(200).json({success:true,data:biddata})
+            res.status(201).json({success:true,data:biddata})
         }
         else{
             res.status(400).json({success:false,msg:"no bid data found"})
         }
     }
     catch(err){
-       res.status(500).json({success:false,msg:'Internal server error',err:err})
+       res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
+
+
+
 const getbidbyid = async(req,res)=>{
     try{
-        const findbid = await Bid.findById({_id:req.params.bidid});
+        const findbid = await Product.findById({_id:req.params.id});
         if(findbid){
             res.status(200).json({success:true,data:findbid})
         }
@@ -63,9 +69,12 @@ const getbidbyid = async(req,res)=>{
         res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
+
+
+
 const deletebid = async(req,res)=>{
     try{
-        const deletebid = await Bid.findByIdAndDelete({id:req.params.id})
+        const deletebid = await Product.findByIdAndDelete({_id:req.params.id})
         if(deletebid){
             res.status(200).json({success:true,msg:"Bid deleted successfully"})
         }
@@ -77,25 +86,51 @@ const deletebid = async(req,res)=>{
         res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
+
+
+
 const updatebid = async(req,res)=>{
-    try{
-        const findbid = await Bid.findByIdAndUpdate({id:req.params.id},{$set:req.body},{new:true})
-        if(findbid){
-            res.status(200).json({success:true,msg:"Bid updated successfully"})
-        }
-        else{
-            res.status(400).json({success:false,msg:"Something went wrong"})
-        }
+   const data = req.body
+   console.log(data)
+   console.log(req.params.id)
+
+
+//    const update = {
+   
+//         name:req.body.name,
+//         image:req.body.image,
+//         product_amount:req.body.product_amount,
+//         product_item_owner:req.body.product_item_owner,
+//         product_category:req.body.product_category,
+//         owner_id:req.body.owner
+//     }
+  
+
+   try{
+   const update = await Product.findByIdAndUpdate({_id:req.params.id},{$set:{
+    name:req.body.name,
+    image:req.body.image,
+    product_amount:req.body.product_amount,
+    product_item_owner:req.body.product_item_owner,
+    product_category:req.body.product_category,
+    owner_id:req.body.owner
+   }},{new:true})
+    if(update){
+        res.status(200).json({success:true,msg:"Updated successfully"})
     }
-    catch(err){
-        res.status(500).json({success:false,msg:"Internal server error"})
+    else{
+        res.status(400).json({success:false,msg:"something went wrong!!"})
     }
+   } 
+   catch(err){
+    res.status(500).json({success:false,msg:"Internal server error"})
+   }
 }
 
 
 const sendexample = async(req,res)=>{
     try{
-        let array = []
+        let array = []      
         for(let i = 0;i<10;i++){
             array.push("kabins")
             console.log("Kabins");
@@ -106,4 +141,4 @@ const sendexample = async(req,res)=>{
         res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
-module.exports ={addnewbid,getbids,getbidbyid,updatebid,sendexample}
+module.exports ={addnewbid,getbids,getbidbyid,updatebid,sendexample,deletebid}

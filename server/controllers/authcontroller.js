@@ -1,6 +1,7 @@
 const {user} = require("../models/usermodel");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const {checkforuser} = require("../utils/finduser")
 const register = async(req,res)=>{
     const email = req.body.email;
     try{
@@ -10,10 +11,11 @@ const register = async(req,res)=>{
             res.status(400).json({success:false,msg:"user already exist"})
         }
         else{
+            const hashedpassword = await bcrypt.hash(req.body.password,15)
             const newuser = new user({
                 name:req.body.name,
                 email:req.body.email,
-                password:req.body.password,
+                password:hashedpassword,
                 number:req.body.number
             })
 
@@ -30,28 +32,39 @@ const register = async(req,res)=>{
         res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
-const login =async(req,res )=>{
+const login = async(req,res )=>{
     const email = req.body.email;
     const password = req.body.password;
     console.log(email,password)
     try{
-        const finduser = await user.find({email:email})
+        const finduser = await user.findOne({email:email})
         if(finduser){
-            const ispass = await bcrypt.compare(password,finduser.password)
-            if(ispass){
-                const token = jwt.sign({id:finduser._id},{email:finduser.email},process.env.JWT_SECRET,{expiresIn:"7d"})
-                res.send({success:true,email:finduser.email,name:finduser.name,"token":token})
+            const match = await bcrypt.compare(password,finduser.password)
+            if(match){
+                const token = await jwt.sign({id:finduser._id,email:email},process.env.JWT_SECRET,{expiresIn:"7d"})
+                if(token){
+                    console.log("token created!!")
+                    console.log("log in successfull!")
+                    res.status(200).json({success:true,token:token,data:{email:email,id:finduser._id}})
+                }
+                else{
+                    console.log("Token not created!")
+                    res.status(400).json({success:false,msg:"Token not created!"})
+                }
             }
             else{
-                res.status(400).json({success:false,msg:"Something went wrong!"})
+                console.log("password didn't match!!")
+                res.status(400).json({success:false,msg:"passwrod didn't match"})
             }
         }
         else{
-            res.status(404).json({sucess:false,msg:"No user found"})
+            console.log("User not found");
+            res.status(404).json({success:false,msg:"User not found"})
         }
+            
     }
     catch(err){
-        res.status(500).json({success:false,msg:"Login failed"})
+        res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
 
@@ -89,24 +102,12 @@ const updateuserdata = async(req,res ) =>{
 }
 
 
-const forgotpasswordcheck = async(req,res)=>{
-    try{
-        const finduser = await user.find({email:email})
-        if(finduser){
-            res.status(200).json({success:true,msg:"Userfound"})
-        }
-        else{
-            res.status(404).json({success:false,msg:"User not found"})
-        }
-    }
-    catch(err){
-        res.status(500).json({success:false,msg:"Internal server error"})
-    }
-    
-}
+
 const changepassword = async(req,res)=>{
-    const user = await user.find({email:email})
+    const email = req.body.email;
     try{
+        const have = checkforuser(email);
+        if(have){
         const password = req.body.password
         const hasedpassword = bcrypt.hash(password,15)
         const updatepassword = await user.findByIdAndUpdate({id:user._id},{$set:{password:hasedpassword}},{new:true})
@@ -117,6 +118,10 @@ const changepassword = async(req,res)=>{
             res.status(400).json({success:false,msg:"Something went wrong"
             })
         }
+    }
+    else{
+        res.status(404).json({success:false,msg:"User not found!!"})
+    }
     }
     catch(err){
         res.status(500).json({success:false,msg:"Internal server error"})
@@ -155,8 +160,7 @@ module.exports = {
     register,
     login,
     getuserdata,
-    updateuserdata
-    ,forgotpasswordcheck,
+    updateuserdata,
     changepassword,
     deleteuser,
     getallusers
