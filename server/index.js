@@ -6,10 +6,14 @@ const bodyparser = require("body-parser")
 const {authrouter} = require("../server/routers/authroutes")
 const {bidrouter} = require("../server/routers/bidrouter")
 const bodyParser = require("body-parser")
+const multer = require("multer")
+const path = require('path');
 
 app.use(cors())
-app.use(express.json())
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 require("dotenv").config()
+
 
 app.use("/api/v1/auth",authrouter)
 app.use("/api/v1/bids",bidrouter)

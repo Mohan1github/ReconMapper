@@ -6,6 +6,8 @@ const bcrypt = require('bcryptjs/dist/bcrypt');
 
 
 const addnewbid = async (req,res) =>{
+
+    const user = req.body;
     try{
         const findprod = await Product.findOne({name:req.body.name})
         if(findprod){
@@ -23,10 +25,21 @@ const addnewbid = async (req,res) =>{
 
             const saving = await newprod.save()
             if(saving){
-                res.status(201).json({success:true,msg:"Product created successfully!!"})
+
+                const finduser = await user.findOne({_id:user})
+                if(finduser){
+                    const savingproduct = await finduser.products.push(saving._id)
+                    if(savingproduct){
+                        res.status(201).json({success:true,msg:"Product created successfully!!"})
+                    }
+                    else{
+                        res.status(400).json({success:false,msg:"Soemthing went wrong"})
+                    }
+                }
+                
             }
             else{
-                res.status(400).json({success:false,msg:"Soemthing went wrong"})
+                res.status(400).json({success:false,msg:"Soemthing went wrong in saving the product in the dbs"})
             }
         }
     }
@@ -141,4 +154,22 @@ const sendexample = async(req,res)=>{
         res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
-module.exports ={addnewbid,getbids,getbidbyid,updatebid,sendexample,deletebid}
+
+const getrelevantproductsuggestion = async(req,res)=>{
+    const productCategory = req.body.category
+    try{
+        
+        const getdata = await Product.filter((data)=> data.category == productCategory)
+        if(getdata){
+            res.status(200).json({success:true,data:getdata})
+        }
+        else{
+            res.status(400).json({success:false,msg:"Something went wrong !!"});
+        
+    }
+     }
+    catch(err){
+        res.status(500).json({sucess:false,msg:"Internal server error"})
+    }
+}
+module.exports ={addnewbid,getbids,getbidbyid,updatebid,sendexample,deletebid,getrelevantproductsuggestion}

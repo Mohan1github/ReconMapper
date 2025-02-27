@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const express = require("express")
-const newsSchema = mongoose.Schema({
+const Schema  = mongoose.Schema
+const newsSchema = new Schema({
     news_headings:{
         type:String,
         trim:true

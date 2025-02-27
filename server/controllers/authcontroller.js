@@ -41,7 +41,7 @@ const login = async(req,res )=>{
         if(finduser){
             const match = await bcrypt.compare(password,finduser.password)
             if(match){
-                const token = await jwt.sign({id:finduser._id,email:email},process.env.JWT_SECRET,{expiresIn:"7d"})
+                const token = jwt.sign({id:finduser._id,email:email},process.env.JWT_SECRET,{expiresIn:"7d"})
                 if(token){
                     console.log("token created!!")
                     console.log("log in successfull!")
@@ -156,6 +156,25 @@ const getallusers = async(req,res) =>{
         res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
+
+const uploadfile = async(req,res)=>{
+    const user_id = req.body.userId
+    const file = req.body
+    try{
+            const finduser = await user.findByIdAndUpdate({_id:user_id},{$set:{profile_pic:file}},{new:true});
+            if(finduser){
+                res.status(200).json({success:true,msg:"Profile uploaded successfully"})
+            }
+            else{
+                res.status(400).json({success:false,msg:"Something went wrong!"})
+            }
+            
+        }
+        
+    catch(err){
+            res.status(500).json({success:false,msg:"Internal server error!"})
+    }
+}
 module.exports = {
     register,
     login,
@@ -163,5 +182,6 @@ module.exports = {
     updateuserdata,
     changepassword,
     deleteuser,
-    getallusers
+    getallusers,
+    uploadfile
 }

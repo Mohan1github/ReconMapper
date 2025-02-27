@@ -4,7 +4,6 @@ import { KeyboardAvoidingView } from "react-native";
 import { useState } from "react";
 import axios from "axios";
 
-// Get the device screen width
 const screenWidth = Dimensions.get("window").width;
 
 const Registerscreen = ({ navigation }) => {
@@ -119,7 +118,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   formContainer: {
-    width: screenWidth * 0.9, // 90% of the screen width
+    width: screenWidth * 0.9, 
     backgroundColor: "#fff",
     borderRadius: 15,
     padding: 20,

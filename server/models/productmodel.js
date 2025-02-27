@@ -21,6 +21,9 @@ const productschema = new Schema({
         type:String,
         required:true
     },
+    comments:[{
+        type:String
+    }],
     owner_id:{
         type:String,
     }

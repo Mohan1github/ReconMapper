@@ -40,6 +40,31 @@ const newsfilter = async(req,res) =>{
         }
     }
     catch(err){
+        res.status(500).json({success:false,msg:"Internal server error!!"})
+    }
+} 
 
+const likenews =  async(req,res)=>{
+    const userid = req.user
+    const blogid = req.body.id;
+    try{
+        const findnews = await News.findOneAndUpdate({_id:blogid})
+        if(findnews){
+            const addinglike = findnews.likes.push(userid);
+            if(addinglike){
+                res.status(200).json({success:true,msg:
+                    "like added successfully",
+                    totallikes:findnews.length
+                })
+            }
+            else{
+                res.status(400).json({success:false,msg:"Something went wrong"})
+            }
+        }
+    }
+    catch(err){
+        res.status(500).json({success:false,msg:"Internal server error"})
     }
 }
+
+module.exports = {getnews,newsfilter,likenews}
